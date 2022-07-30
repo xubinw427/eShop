@@ -13,43 +13,38 @@ export class LoginStatusComponent implements OnInit {
   userFullName: string;
 
 
-  constructor(@Inject(OKTA_AUTH) private oktaAuth: OktaAuth) {
-    this.oktaAuth.authStateManager.subscribe(
-      isAuth => this.isAuthenticated = isAuth
+  constructor(private oktaAuthService: OktaAuthStateService,
+    @Inject(OKTA_AUTH) private oktaAuth: OktaAuth) { }
+
+  ngOnInit(): void {
+
+    // Subscribe to authentication state changes
+    this.oktaAuthService.authState$.subscribe(
+      (result) => {
+        this.isAuthenticated = result.isAuthenticated;
+        this.getUserDetails();
+      }
     );
-   }
-
-    async ngOnInit(){
-
-      // Subscribe to authentication state changes
-      this.isAuthenticated = await this.oktaAuth.isAuthenticated();
     
+  }
+
+  getUserDetails() {
     if (this.isAuthenticated) {
-      const userClaim = await this.oktaAuth.getUser();
-      this.userFullName = userClaim.name || "";
-    }
-    console.log("Autentication = " + this.isAuthenticated);
-    console.log("Username = " + this.userFullName);
-      
-    }
-  
-  // getUserDetails() {
-  //   if(this.isAuthenticated){
 
-  //     //Fetch the logged in user details (user's claims)
+      // Fetch the logged in user details (user's claims)
+      //
+      // user full name is exposed as a property name
+      this.oktaAuth.getUser().then(
+        (res) => {
+          this.userFullName = res.name;
+        }
+      );
+    }
+  }
 
-  //     //
-  //     // user full name is exposed as a property name
-  //     this.oktaAuth.getUser().then(
-  //       (res) => {
-  //         this.userFullName = res.name;
-  //       }
-  //     );
-  //   }
-  // }
-  async logout(){
-    // Terminates the session with Okta and removes current tokens
-    await this.oktaAuth.signOut()
+  logout() {
+    // Terminates the session with Okta and removes current tokens.
+    this.oktaAuth.signOut();
   }
 
 }
