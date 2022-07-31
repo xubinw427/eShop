@@ -22,8 +22,7 @@ import { OktaAuthGuard, OktaAuthModule, OktaCallbackComponent, OKTA_CONFIG } fro
 import { OktaAuth } from '@okta/okta-auth-js';
 import myAppConfig from './config/my-app-config';
 import { MembersPageComponent } from './components/members-page/members-page.component';
-// import { MembersPageComponent } from './components/members-page/members-page.component';
-// import { OrderHistoryComponent } from './components/order-history/order-history.component';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 // import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 const oktaConfig =  myAppConfig.oidc;
@@ -40,7 +39,7 @@ function onAuthRequired(oktaAuth, injector) {
 
 const routes: Routes = [
 
-  // {path: 'order-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard ]},
+  {path: 'order-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard ]},
   {path: 'members', component: MembersPageComponent, canActivate: [OktaAuthGuard]},
   // , data: {onAuthRequired:onAuthRequired} },
 
@@ -71,8 +70,7 @@ const routes: Routes = [
     LoginComponent,
     LoginStatusComponent,
     MembersPageComponent,
-    MembersPageComponent,
-    // OrderHistoryComponent
+    OrderHistoryComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

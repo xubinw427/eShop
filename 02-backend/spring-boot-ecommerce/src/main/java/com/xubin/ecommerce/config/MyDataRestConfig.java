@@ -1,9 +1,6 @@
 package com.xubin.ecommerce.config;
 
-import com.xubin.ecommerce.entity.Country;
-import com.xubin.ecommerce.entity.Product;
-import com.xubin.ecommerce.entity.ProductCategory;
-import com.xubin.ecommerce.entity.State;
+import com.xubin.ecommerce.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +42,9 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         // disable the http methods for State
         disableHttpMethods(State.class, config, theUnsupportedActions);
+
+        // disable the http methods for Order
+        disableHttpMethods(Order.class, config, theUnsupportedActions);
         // call an internal helper method
         exposeIds(config);
 
